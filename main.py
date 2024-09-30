@@ -19,7 +19,7 @@ MIN_RESOLUTION_W = int(config['settings']['min_resolution'].split("x")[0])
 MIN_RESOLUTION_H = int(config['settings']['min_resolution'].split("x")[1])
 
 semaphore = asyncio.Semaphore(MAX_CONCURRENT_TASKS)
-successful_streams = []
+successful_streams = {}
 streams_lock = asyncio.Lock()
 
 
@@ -127,7 +127,7 @@ async def ffmpeg_url(video_url, timeout, output_file, cmd='ffmpeg'):
         return res
 
 
-async def measure_video_stream_speed(video_url):
+async def measure_video_stream_speed(channel_name, video_url):
     global successful_streams
 
     random_number = str(random.randint(1, 1000000))
@@ -137,10 +137,6 @@ async def measure_video_stream_speed(video_url):
 
     async with semaphore:
         try:
-            async with streams_lock:
-                if len(successful_streams) >= COLLECT_COUNT:
-                    return
-
             ffmpeg_output = await ffmpeg_url(video_url, DURATION, output_file)
             if not ffmpeg_output:
                 return
@@ -162,11 +158,13 @@ async def measure_video_stream_speed(video_url):
                     #     return None
                     # else:
                     async with streams_lock:
-                        if len(successful_streams) < COLLECT_COUNT:
-                            successful_streams.append((video_url, speed))
+                        if successful_streams.get(channel_name, None):
+                            successful_streams[channel_name].append((video_url, speed))
+                        else:
+                            successful_streams[channel_name] = [(video_url, speed)]
+                        if len(successful_streams[channel_name]) >= COLLECT_COUNT:
                             return
-                        if len(successful_streams) >= COLLECT_COUNT:
-                            return
+
         except Exception:
             traceback.print_exc()
             return
@@ -175,12 +173,9 @@ async def measure_video_stream_speed(video_url):
                 os.remove(output_file)
 
 
-async def main(video_urls):
-    tasks = [measure_video_stream_speed(url) for url in video_urls]
+async def main(channel, video_urls):
+    tasks = [measure_video_stream_speed(channel, url) for url in video_urls]
     await asyncio.gather(*tasks)
-    sorted_streams = sorted(successful_streams, key=lambda x: x[1], reverse=True)
-    return [url for url, speed in sorted_streams]
-
 
 if __name__ == '__main__':
     try:
@@ -192,22 +187,21 @@ if __name__ == '__main__':
 
     # 执行任务
     test_speed_channels = get_test_speed_channels()
-
-    test_success_channels = {}
     # 测试视频流 URLs
     for channel, video_urls in test_speed_channels.items():
         print(channel, len(video_urls))
-        sorted_urls = loop.run_until_complete(main(video_urls))  # 使用当前事件循环
-        test_success_channels[channel] = sorted_urls
-        print("Sorted URLs by speed:", sorted_urls)
+        loop.run_until_complete(main(channel, video_urls))  # 使用当前事件循环
+        # test_success_channels[channel] = sorted_urls
+        # print("Sorted URLs by speed:", sorted_urls)
 
     channels, _ = get_channel_items()
     output = ""
     for category, channels in channels.items():
         output += f"{category},#genre#\n"
         for channel, _ in channels.items():
-            urls = test_success_channels.get(channel, [])
-            for url in urls:
+            url_infos = successful_streams.get(filter_cctv_key(channel), [])
+            sorted_urls = sorted(url_infos, key=lambda x: x[1], reverse=True)
+            for url, _ in sorted_urls:
                 output += f"{channel},{url}\n"
     with open("result.txt", "w", encoding="utf-8") as file:
         file.write(output)
