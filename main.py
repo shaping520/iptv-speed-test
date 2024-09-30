@@ -77,7 +77,7 @@ def get_test_speed_channels():
         channels, channel_keys = get_channel_items()
         print(channels)
         response = requests.get(
-            url="https://up.myzy.us.kg/https://raw.githubusercontent.com/kimwang1978/collect-tv-txt/main/merged_output.txt",
+            url="https://raw.githubusercontent.com/kimwang1978/collect-tv-txt/main/merged_output.txt",
             timeout=30)
         lines = response.text.splitlines()
         test_speed_channels = {}
