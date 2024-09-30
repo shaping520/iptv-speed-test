@@ -206,7 +206,7 @@ if __name__ == '__main__':
     for category, channels in channels.items():
         output += f"{category},#genre#\n"
         for channel, _ in channels.items():
-            urls = test_success_channels.get(channel, [])
+            urls = test_success_channels.get(filter_cctv_key(channel), [])
             for url in urls:
                 output += f"{channel},{url}\n"
     with open("result.txt", "w", encoding="utf-8") as file:
