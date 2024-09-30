@@ -159,9 +159,11 @@ async def measure_video_stream_speed(channel_name, video_url):
                     # else:
                     async with streams_lock:
                         if successful_streams.get(channel_name, None):
-                            successful_streams[channel_name].append(video_url)
+                            successful_streams[channel_name].append((video_url, speed))
                         else:
-                            successful_streams[channel_name] = [video_url]
+                            successful_streams[channel_name] = [(video_url, speed)]
+                        if len(successful_streams[channel_name]) >= COLLECT_COUNT:
+                            return
 
         except Exception:
             traceback.print_exc()
@@ -185,12 +187,10 @@ if __name__ == '__main__':
 
     # 执行任务
     test_speed_channels = get_test_speed_channels()
-
-    test_success_channels = {}
     # 测试视频流 URLs
     for channel, video_urls in test_speed_channels.items():
         print(channel, len(video_urls))
-        sorted_urls = loop.run_until_complete(main(channel, video_urls))  # 使用当前事件循环
+        loop.run_until_complete(main(channel, video_urls))  # 使用当前事件循环
         # test_success_channels[channel] = sorted_urls
         # print("Sorted URLs by speed:", sorted_urls)
 
@@ -199,8 +199,9 @@ if __name__ == '__main__':
     for category, channels in channels.items():
         output += f"{category},#genre#\n"
         for channel, _ in channels.items():
-            urls = test_success_channels.get(filter_cctv_key(channel), [])
-            for url in urls:
+            url_infos = successful_streams.get(filter_cctv_key(channel), [])
+            sorted_urls = sorted(url_infos, key=lambda x: x[1], reverse=True)
+            for url, _ in sorted_urls:
                 output += f"{channel},{url}\n"
     with open("result.txt", "w", encoding="utf-8") as file:
         file.write(output)
