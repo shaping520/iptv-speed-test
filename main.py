@@ -76,9 +76,7 @@ def get_test_speed_channels():
     try:
         channels, channel_keys = get_channel_items()
         print(channels)
-        response = requests.get(
-            url="https://raw.githubusercontent.com/kimwang1978/collect-tv-txt/main/merged_output.txt",
-            timeout=30)
+        response = requests.get(url=config['settings']['iptv_url'], timeout=30)
         lines = response.text.splitlines()
         test_speed_channels = {}
         for line in lines:
