@@ -158,15 +158,15 @@ async def measure_video_stream_speed(channel_name, video_url):
 
                     t = DURATION - 5 if DURATION > 5 else DURATION
                     speed = file_size / 1024 / 1024 / t
-
-                    if speed < (bitrate / 8) * t:
-                        return
+                    speed_rate = speed / bitrate
+                    # if speed < (bitrate / 8) * t:
+                        # return
                         
                     async with streams_lock:
                         if successful_streams.get(channel_name, None):
-                            successful_streams[channel_name].append((video_url, speed))
+                            successful_streams[channel_name].append((video_url, speed_rate))
                         else:
-                            successful_streams[channel_name] = [(video_url, speed)]
+                            successful_streams[channel_name] = [(video_url, speed_rate)]
                         if len(successful_streams[channel_name]) >= COLLECT_COUNT:
                             return
 
