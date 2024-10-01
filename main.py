@@ -167,8 +167,8 @@ async def measure_video_stream_speed(channel_name, video_url):
                             successful_streams[channel_name].append((video_url, speed_rate))
                         else:
                             successful_streams[channel_name] = [(video_url, speed_rate)]
-                        if len(successful_streams[channel_name]) >= COLLECT_COUNT:
-                            return
+                        # if len(successful_streams[channel_name]) >= COLLECT_COUNT:
+                            # return
 
         except Exception:
             traceback.print_exc()
@@ -206,7 +206,7 @@ if __name__ == '__main__':
         for channel, _ in channels.items():
             url_infos = successful_streams.get(filter_cctv_key(channel), [])
             sorted_urls = sorted(url_infos, key=lambda x: x[1], reverse=True)
-            for url, _ in sorted_urls:
+            for url, _ in sorted_urls[:COLLECT_COUNT]:
                 output += f"{channel},{url}\n"
     with open("result.txt", "w", encoding="utf-8") as file:
         file.write(output)
