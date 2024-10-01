@@ -76,9 +76,7 @@ def get_test_speed_channels():
     try:
         channels, channel_keys = get_channel_items()
         print(channels)
-        response = requests.get(
-            url="https://up.myzy.us.kg/https://raw.githubusercontent.com/kimwang1978/collect-tv-txt/main/merged_output.txt",
-            timeout=30)
+        response = requests.get(url=config['settings']['iptv_url'], timeout=30)
         lines = response.text.splitlines()
         test_speed_channels = {}
         for line in lines:
@@ -146,6 +144,13 @@ async def measure_video_stream_speed(channel_name, video_url):
                 width, height = int(resolution_match.group(1)), int(resolution_match.group(2))
                 if width < MIN_RESOLUTION_W or height < MIN_RESOLUTION_W:
                     return
+                if height > 1080:
+                    return
+                bitrate = 1
+                if height == 720:
+                    bitrate = 3
+                elif height == 1080:
+                    bitrate = 5
                 if os.path.exists(output_file):
                     file_size = os.path.getsize(output_file)
                     if file_size <= 0:
@@ -154,9 +159,9 @@ async def measure_video_stream_speed(channel_name, video_url):
                     t = DURATION - 5 if DURATION > 5 else DURATION
                     speed = file_size / 1024 / 1024 / t
 
-                    # if speed < (bitrate / 8) * DURATION:
-                    #     return None
-                    # else:
+                    if speed < (bitrate / 8) * t:
+                        return
+                        
                     async with streams_lock:
                         if successful_streams.get(channel_name, None):
                             successful_streams[channel_name].append((video_url, speed))
