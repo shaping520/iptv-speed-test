@@ -5,6 +5,7 @@ import os
 import re
 import configparser
 import traceback
+import json
 
 import requests
 
@@ -85,7 +86,14 @@ def get_test_speed_channels():
             if "," not in line:
                 continue
             channel_name = filter_cctv_key(line.split(",")[0])
-            if channel_name not in channel_keys:
+            same_channels = json.loads(config['settings']['same_channels'])
+            same_channel_list = same_channels.get(channel_name, None)
+            if same_channel_list is None and channel_name not in channel_keys:
+                continue
+            if same_channel_list and channel_name not in same_channel_list and channel_name not in channel_keys:
+                continue
+            black_channels = json.loads(config['settings']['black_channels'])
+            if line.split(",")[1] in black_channels:
                 continue
             if test_speed_channels.get(channel_name, None):
                 test_speed_channels[channel_name].append(line.split(",")[1])
