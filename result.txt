@@ -1,6 +1,4 @@
 上海频道,#genre#
 新闻综合,https://stream1.freetv.fun/shang-hai-xin-wen-zong-he-3.m3u8
-东方卫视,https://stream1.freetv.fun/56fc198d7ec4a227f6311d4ade4aad1840b5e88ec1217be3f57f765ac0355c1f.m3u8
+东方卫视,http://110.87.12.51:5550/rtp/239.61.2.28:8162
 东方卫视,http://222.186.57.43:22222/php/best.php?id=dfws&live=/PLTV/
-东方卫视,http://222.186.57.43:22222/php/akmg.php?id=dfws
-东方卫视,http://111.167.49.238:5002/udp/225.1.2.31:5002
