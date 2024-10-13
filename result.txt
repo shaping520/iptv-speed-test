@@ -1,10 +1,5 @@
 上海频道,#genre#
 新闻综合,https://stream1.freetv.fun/xin-wen-zong-he-7.m3u8
-新闻综合,https://stream1.freetv.fun/shang-hai-xin-wen-zong-he-3.m3u8
-新闻综合,https://stream1.freetv.fun/xin-wen-zong-he-5.ctv
-东方卫视,http://xuys.top:8888/udp/225.1.2.31:5002
-东方卫视,http://125.109.62.72:9999/udp/233.50.200.146:5140
+东方影视,https://stream1.freetv.fun/dong-fang-ying-shi-3.m3u8
+五星体育,https://stream1.freetv.fun/wu-xing-ti-yu-15.ctv
 五星体育,https://stream1.freetv.fun/wu-xing-ti-yu-10.m3u8
-五星体育,https://stream1.freetv.fun/wu-xing-ti-yu-8.m3u8
-生活时尚,http://xuys.top:8888/udp/225.1.1.143:5002
-生活时尚,https://stream1.freetv.fun/sheng-huo-shi-shang-7.ctv
