@@ -1,1 +1,3 @@
 上海频道,#genre#
+新闻综合,https://stream1.freetv.fun/xin-wen-zong-he-2.ctv
+东方卫视,http://zbdl.jsonjk.top/MGDL/ZBmgDL.php?id=dfws
