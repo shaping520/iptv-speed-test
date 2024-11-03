@@ -1,3 +1,7 @@
 上海频道,#genre#
-新闻综合,https://stream1.freetv.fun/xin-wen-zong-he-2.ctv
-东方卫视,http://zbdl.jsonjk.top/MGDL/ZBmgDL.php?id=dfws
+新闻综合,https://stream1.freetv.fun/xin-wen-zong-he-4.m3u8
+新闻综合,https://stream1.freetv.fun/shang-hai-xin-wen-zong-he-6.ctv
+东方卫视,http://221.196.136.66:1/udp/225.1.2.31:5002
+东方卫视,http://110.177.146.152:888/udp/239.1.1.31:8031
+生活时尚,https://stream1.freetv.fun/sheng-huo-shi-shang-10.ctv
+生活时尚,http://110.177.146.152:888/udp/239.1.1.76:8076
