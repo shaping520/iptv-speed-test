@@ -1,4 +1,4 @@
 上海频道,#genre#
 东方卫视,http://aktv.top/AKTV/live/aktv3/null/AKTV.m3u8
-东方卫视,http://www.furymax.top:85/rtp/239.254.96.142:8926
+生活时尚,https://stream1.freetv.fun/sheng-huo-shi-shang-3.ctv
 生活时尚,http://110.177.146.152:888/udp/239.1.1.76:8076
