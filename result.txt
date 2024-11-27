@@ -1,4 +1,4 @@
 上海频道,#genre#
+东方卫视,http://gdctcc-livod.tx-cdn.gitv.tv/gitv_live/G_DONGFANG-HQ/G_DONGFANG-HQ.m3u8
 东方卫视,http://60.164.128.167:8029/rtp/239.255.30.130:8231
-东方卫视,http://221.196.136.66:1/udp/225.1.2.31:5002
-东方影视,http://z.b.bkpcp.top/m.php?id=shys
+东方卫视,http://aktv.top/AKTV/live/aktv3/null/AKTV.m3u8
