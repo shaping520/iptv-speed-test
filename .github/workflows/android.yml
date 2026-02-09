@@ -1,0 +1,35 @@
+name: build-easytier-android
+
+on:
+  workflow_dispatch:   # 手动点按钮触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout EasyTier
+        uses: actions/checkout@v4
+        with:
+          repository: EasyTier/EasyTier   # EasyTier 官方仓库
+          path: easytier
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android
+
+      - name: Install NDK
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r25c
+
+      - name: Build
+        working-directory: easytier
+        run: |
+          export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
+          cargo build --release --target aarch64-linux-android
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: easytier-android-arm64
+          path: easytier/target/aarch64-linux-android/release/easytier
